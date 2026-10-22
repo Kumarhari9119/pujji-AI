@@ -1,0 +1,651 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#090a14">
+<title>Pujji AI — Your Personal Assistant</title>
+
+<style>
+:root {
+  color-scheme: dark;
+  --bg: #090a14;
+  --panel: rgba(24, 25, 45, .76);
+  --purple: #a78bfa;
+  --cyan: #67e8f9;
+  --muted: #a6a7bd;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  min-height: 100dvh;
+  color: #f8f7ff;
+  background:
+    radial-gradient(ellipse at 50% 25%, #28204b 0%, transparent 48%),
+    radial-gradient(ellipse at 10% 90%, #102d3d 0%, transparent 42%),
+    var(--bg);
+  font-family: Inter, "Segoe UI", Arial, sans-serif;
+}
+
+button, input { font: inherit; }
+button { cursor: pointer; }
+
+.app {
+  width: min(100%, 900px);
+  min-height: 100vh;
+  min-height: 100dvh;
+  margin: auto;
+  padding: 22px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.brand-icon {
+  width: 43px;
+  height: 43px;
+  border-radius: 15px;
+  display: grid;
+  place-items: center;
+  font-size: 23px;
+  color: white;
+  background: linear-gradient(135deg, #8b5cf6, #06b6d4);
+  box-shadow: 0 0 24px #8b5cf640;
+}
+
+.brand h1 { margin: 0; font-size: 21px; letter-spacing: .3px; }
+.brand p { margin: 4px 0 0; color: var(--muted); font-size: 12px; }
+
+.status {
+  border: 1px solid #ffffff19;
+  background: #ffffff08;
+  border-radius: 30px;
+  padding: 9px 12px;
+  font-size: 12px;
+  color: #c4b5fd;
+  white-space: nowrap;
+}
+
+.status::before {
+  content: "";
+  display: inline-block;
+  width: 7px; height: 7px;
+  margin-right: 7px;
+  border-radius: 50%;
+  background: #a78bfa;
+}
+
+main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  padding: 12px 0;
+}
+
+.eyebrow {
+  color: var(--cyan);
+  font-size: 11px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+}
+
+.orb-wrap {
+  width: 210px;
+  height: 210px;
+  display: grid;
+  place-items: center;
+  position: relative;
+  margin: 8px 0;
+}
+
+.orb-halo {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: conic-gradient(from 20deg, #8b5cf6, #22d3ee, #ec4899, #8b5cf6);
+  filter: blur(26px);
+  opacity: .34;
+  animation: rotate 9s linear infinite;
+}
+
+.orb {
+  width: 160px;
+  height: 160px;
+  position: relative;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 32% 27%, #ffffffb0, transparent 12%),
+    radial-gradient(ellipse at 36% 27%, #c4b5fd, transparent 30%),
+    radial-gradient(ellipse at 65% 72%, #0891b2, transparent 40%),
+    linear-gradient(145deg, #4c1d95, #111b3d 65%, #071a2c);
+  border: 1px solid #c4b5fd70;
+  box-shadow: inset -12px -12px 35px #02061780,
+              0 0 35px #8b5cf655;
+  transition: transform .3s, filter .3s;
+}
+
+.orb::before, .orb::after {
+  content: "";
+  position: absolute;
+  border: 1px solid #a5f3fc75;
+  border-radius: 50%;
+  inset: -12px;
+  animation: pulse 3s ease-out infinite;
+}
+
+.orb::after { animation-delay: 1.5s; }
+
+body.listening .orb {
+  transform: scale(1.07);
+  filter: brightness(1.35);
+  animation: breathe .8s ease-in-out infinite alternate;
+}
+
+body.speaking .orb {
+  transform: scale(1.04);
+  filter: hue-rotate(25deg) brightness(1.25);
+  animation: breathe .5s ease-in-out infinite alternate;
+}
+
+h2 {
+  font-size: clamp(24px, 5vw, 34px);
+  text-align: center;
+  margin: 0;
+  letter-spacing: -.7px;
+}
+
+.subtitle {
+  color: var(--muted);
+  text-align: center;
+  margin: 0;
+  line-height: 1.6;
+  font-size: 14px;
+}
+
+.controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 8px 0;
+}
+
+.mic-button {
+  width: 74px;
+  height: 74px;
+  border: 0;
+  border-radius: 50%;
+  color: #101020;
+  font-size: 29px;
+  background: linear-gradient(135deg, #c4b5fd, #67e8f9);
+  box-shadow: 0 0 34px #67e8f944;
+  transition: transform .2s;
+}
+
+.mic-button:active { transform: scale(.94); }
+
+.secondary {
+  border: 1px solid #ffffff22;
+  border-radius: 30px;
+  background: #ffffff09;
+  color: #e5e7eb;
+  padding: 12px 17px;
+}
+
+.secondary:hover { background: #ffffff17; }
+
+.hint { font-size: 12px; color: var(--muted); }
+
+.conversation {
+  width: 100%;
+  border: 1px solid #ffffff15;
+  background: var(--panel);
+  border-radius: 22px;
+  padding: 18px;
+  backdrop-filter: blur(18px);
+  box-shadow: 0 15px 60px #00000020;
+}
+
+.conversation-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.conversation-head strong { font-size: 14px; }
+.conversation-head button {
+  background: transparent;
+  border: 0;
+  color: var(--muted);
+  font-size: 12px;
+  padding: 8px;
+}
+
+.messages {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-height: 230px;
+  overflow-y: auto;
+}
+
+.message {
+  max-width: 90%;
+  padding: 12px 14px;
+  border-radius: 15px;
+  line-height: 1.55;
+  font-size: 14px;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+
+.message.user {
+  align-self: flex-end;
+  background: #6851b7;
+  border-bottom-right-radius: 5px;
+}
+
+.message.assistant {
+  align-self: flex-start;
+  background: #ffffff0b;
+  border: 1px solid #ffffff12;
+  border-bottom-left-radius: 5px;
+}
+
+.message-label {
+  display: block;
+  font-size: 10px;
+  color: #c4b5fd;
+  margin-bottom: 5px;
+  letter-spacing: .5px;
+}
+
+footer {
+  text-align: center;
+  color: #85869e;
+  font-size: 11px;
+  padding: 5px 0;
+}
+
+@keyframes pulse {
+  0% { transform: scale(.92); opacity: .8; }
+  100% { transform: scale(1.25); opacity: 0; }
+}
+@keyframes rotate { to { transform: rotate(360deg); } }
+@keyframes breathe {
+  to { transform: scale(1.08); }
+}
+
+@media (max-width: 480px) {
+  .app { padding: 17px 13px; gap: 14px; }
+  .brand h1 { font-size: 19px; }
+  .brand-icon { width: 39px; height: 39px; }
+  .status { padding: 8px; font-size: 10px; }
+  .orb-wrap { width: 175px; height: 175px; }
+  .orb { width: 135px; height: 135px; }
+  .conversation { padding: 14px; }
+  .messages { max-height: 200px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
+</style>
+</head>
+
+<body>
+<div class="app">
+  <header>
+    <div class="brand">
+      <div class="brand-icon">✧</div>
+      <div>
+        <h1>Pujji AI</h1>
+        <p>Your personal voice companion</p>
+      </div>
+    </div>
+    <div class="status" id="status">Ready to talk</div>
+  </header>
+
+  <main>
+    <div class="eyebrow">YOUR AI COMPANION</div>
+
+    <div class="orb-wrap" aria-hidden="true">
+      <div class="orb-halo"></div>
+      <div class="orb"></div>
+    </div>
+
+    <h2 id="headline">Hey, I'm Pujji ✨</h2>
+    <p class="subtitle" id="subtitle">
+      I'm here for you. What's on your mind?
+    </p>
+
+    <div class="controls">
+      <button class="mic-button" id="micButton"
+        aria-label="Start voice input" title="Start speaking">🎙</button>
+      <button class="secondary" id="stopButton">■ Stop voice</button>
+    </div>
+
+    <div class="hint" id="hint">
+      Tap the microphone and start speaking
+    </div>
+  </main>
+
+  <section class="conversation">
+    <div class="conversation-head">
+      <strong>💬 Conversation</strong>
+      <button id="clearButton">Clear chat</button>
+    </div>
+    <div class="messages" id="messages" aria-live="polite">
+      <div class="message assistant">
+        <span class="message-label">PUJJI</span>
+        Hello! Main Pujji hoon. Microphone dabao aur mujhse baat karo. 💜
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    Made with curiosity &amp; 💜 · Voice availability depends on your browser
+  </footer>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+
+const status = $("status");
+const headline = $("headline");
+const subtitle = $("subtitle");
+const hint = $("hint");
+const messages = $("messages");
+const micButton = $("micButton");
+
+const SpeechRecognition =
+  window.SpeechRecognition || window.webkitSpeechRecognition;
+
+let recognition = null;
+let listening = false;
+let speaking = false;
+let finalTranscript = "";
+let voices = [];
+
+function setStatus(text) {
+  status.textContent = text;
+}
+
+function addMessage(text, who) {
+  const bubble = document.createElement("div");
+  bubble.className = "message " + who;
+
+  const label = document.createElement("span");
+  label.className = "message-label";
+  label.textContent = who === "user" ? "YOU" : "PUJJI";
+
+  const content = document.createElement("span");
+  content.textContent = text;
+
+  bubble.append(label, content);
+  messages.appendChild(bubble);
+  messages.scrollTop = messages.scrollHeight;
+  return content;
+}
+
+function loadVoices() {
+  voices = window.speechSynthesis
+    ? window.speechSynthesis.getVoices()
+    : [];
+}
+if ("speechSynthesis" in window) {
+  loadVoices();
+  window.speechSynthesis.onvoiceschanged = loadVoices;
+}
+
+function chooseVoice(language) {
+  const lang = language.toLowerCase();
+  const matching = voices.filter(v =>
+    v.lang.toLowerCase().startsWith(lang)
+  );
+
+  // Prefer a voice with a feminine-sounding name where available.
+  const female = matching.find(v =>
+    /female|zira|samantha|aria|jenny|sonia|heera|priya|neerja|aditi|swara|google हिन्दी/i
+      .test(v.name)
+  );
+
+  return female || matching[0] || voices.find(v =>
+    /female|samantha|aria|jenny|zira/i.test(v.name)
+  ) || voices[0] || null;
+}
+
+function speak(text, language = "hi-IN") {
+  if (!("speechSynthesis" in window)) {
+    hint.textContent = "Speech output is not supported in this browser.";
+    return;
+  }
+
+  window.speechSynthesis.cancel();
+  const utterance = new SpeechSynthesisUtterance(text);
+  const voice = chooseVoice(language);
+
+  if (voice) {
+    utterance.voice = voice;
+    utterance.lang = voice.lang;
+  } else {
+    utterance.lang = language;
+  }
+
+  utterance.rate = 0.94;
+  utterance.pitch = 1.12;
+  utterance.volume = 1;
+
+  utterance.onstart = () => {
+    speaking = true;
+    document.body.classList.add("speaking");
+    headline.textContent = "Pujji is speaking...";
+    setStatus("Speaking");
+  };
+
+  utterance.onend = () => {
+    speaking = false;
+    document.body.classList.remove("speaking");
+    headline.textContent = "I'm listening ✨";
+    setStatus("Ready to talk");
+  };
+
+  utterance.onerror = () => {
+    speaking = false;
+    document.body.classList.remove("speaking");
+    setStatus("Ready to talk");
+  };
+
+  window.speechSynthesis.speak(utterance);
+}
+
+function getReply(text) {
+  const t = text.toLowerCase().trim();
+
+  if (/^(hi|hello|hey|namaste|नमस्ते|हेलो)\b?/.test(t) ||
+      /^(namaste|namaskar|नमस्कार)/.test(t)) {
+    return "Hey! 💜 Main Pujji hoon. Batao, aaj tumhare dimaag mein kya chal raha hai?";
+  }
+
+  if (/tumhara naam|your name|who are you|kaun ho/.test(t)) {
+    return "Mera naam Pujji hai! Main tumhari personal AI assistant banne ki taiyari mein hoon. ✨";
+  }
+
+  if (/time|samay|kitne baje|समय|बजे/.test(t)) {
+    return "Tumhare device par abhi " +
+      new Date().toLocaleTimeString("en-IN", {
+        hour: "numeric", minute: "2-digit"
+      }) + " ho rahe hain.";
+  }
+
+  if (/date|tarikh|aaj ki tareekh|तारीख|आज कौन सा दिन/.test(t)) {
+    return "Aaj " + new Date().toLocaleDateString("hi-IN", {
+      weekday: "long", day: "numeric", month: "long", year: "numeric"
+    }) + " hai.";
+  }
+
+  if (/how are you|kaisi ho|kaise ho|कैसी हो|कैसे हो/.test(t)) {
+    return "Main badhiya hoon! 😊 Tumse baat karke achha lag raha hai. Tum kaise ho?";
+  }
+
+  if (/thank|shukriya|धन्यवाद/.test(t)) {
+    return "Aww, you're welcome! 💜 Main yahin hoon, jab bhi tumhe meri zaroorat ho.";
+  }
+
+  if (/open youtube|youtube kholo/.test(t)) {
+    window.open("https://www.youtube.com/", "_blank", "noopener");
+    return "YouTube kholne ki koshish kar rahi hoon.";
+  }
+
+  if (/open google|google kholo/.test(t)) {
+    window.open("https://www.google.com/", "_blank", "noopener");
+    return "Google kholne ki koshish kar rahi hoon.";
+  }
+
+  return "Maine suna: \"" + text + "\". Abhi meri basic demo intelligence hai. Agle version mein hum mujhe real AI se connect karenge, taaki main zyada smart jawab de sakoon. 💜";
+}
+
+function respond(text, language) {
+  if (!text.trim()) return;
+
+  addMessage(text, "user");
+  const reply = getReply(text);
+  addMessage(reply, "assistant");
+
+  const replyLanguage = /[\u0900-\u097F]/.test(reply)
+    ? "hi-IN" : (language || "en-IN");
+
+  speak(reply, replyLanguage);
+}
+
+function startListening() {
+  if (!SpeechRecognition) {
+    setStatus("Voice input unavailable");
+    hint.textContent =
+      "Voice recognition isn't supported here. Try an updated Chrome browser.";
+    return;
+  }
+
+  if (listening) {
+    recognition.stop();
+    return;
+  }
+
+  if ("speechSynthesis" in window) {
+    window.speechSynthesis.cancel();
+  }
+
+  recognition = new SpeechRecognition();
+  recognition.lang = "hi-IN";
+  recognition.continuous = false;
+  recognition.interimResults = true;
+  recognition.maxAlternatives = 1;
+  finalTranscript = "";
+
+  recognition.onstart = () => {
+    listening = true;
+    document.body.classList.add("listening");
+    headline.textContent = "I'm listening...";
+    subtitle.textContent = "Bolo, main sun rahi hoon 💜";
+    hint.textContent = "Listening in Hindi · Speak now";
+    micButton.textContent = "⏹";
+    setStatus("Listening");
+  };
+
+  recognition.onresult = event => {
+    let interim = "";
+
+    for (let i = event.resultIndex; i < event.results.length; i++) {
+      const transcript = event.results[i][0].transcript;
+      if (event.results[i].isFinal) {
+        finalTranscript += transcript;
+      } else {
+        interim += transcript;
+      }
+    }
+
+    hint.textContent = finalTranscript || interim || "Listening...";
+  };
+
+  recognition.onerror = event => {
+    hint.textContent = event.error === "not-allowed"
+      ? "Microphone permission denied. Allow microphone access in your browser."
+      : "Voice error: " + event.error + ". Try again.";
+    setStatus("Ready to talk");
+  };
+
+  recognition.onend = () => {
+    listening = false;
+    document.body.classList.remove("listening");
+    micButton.textContent = "🎙";
+
+    const text = finalTranscript.trim();
+
+    if (text) {
+      headline.textContent = "One moment...";
+      subtitle.textContent = "Pujji is preparing a response.";
+      respond(text, "hi-IN");
+    } else {
+      headline.textContent = "Hey, I'm Pujji ✨";
+      subtitle.textContent = "I'm here for you. What's on your mind?";
+      setStatus("Ready to talk");
+      if (!hint.textContent.startsWith("Voice error") &&
+          !hint.textContent.startsWith("Microphone")) {
+        hint.textContent = "No speech detected. Tap the microphone to retry.";
+      }
+    }
+  };
+
+  try {
+    recognition.start();
+  } catch (error) {
+    setStatus("Ready to talk");
+    hint.textContent = "Please wait a moment and try again.";
+  }
+}
+
+micButton.addEventListener("click", startListening);
+
+$("stopButton").addEventListener("click", () => {
+  if (recognition && listening) recognition.stop();
+  if ("speechSynthesis" in window) window.speechSynthesis.cancel();
+
+  speaking = false;
+  document.body.classList.remove("speaking");
+  setStatus("Ready to talk");
+  headline.textContent = "Hey, I'm Pujji ✨";
+});
+
+$("clearButton").addEventListener("click", () => {
+  messages.replaceChildren();
+  addMessage("Chat cleared! Chalo, phir se baat shuru karein. 💜", "assistant");
+});
+
+</script>
+</body>
+</html>
