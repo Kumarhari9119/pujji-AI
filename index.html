@@ -392,6 +392,11 @@ const hint = $("hint");
 const messages = $("messages");
 const micButton = $("micButton");
 
+const wakeButton = $("wakeButton");
+
+let wakeModeEnabled = false;
+let wakeRecognition = null;
+
 const SpeechRecognition =
   window.SpeechRecognition || window.webkitSpeechRecognition;
 
@@ -641,6 +646,108 @@ setStatus("Listening · Speech detected");
 }
 
 micButton.addEventListener("click", startListening);
+function startWakeWord() {
+  if (!SpeechRecognition) {
+    setStatus("Voice input unavailable");
+    hint.textContent = "Please use an updated Chrome browser.";
+    return;
+  }
+
+  if (wakeRecognition) {
+    try {
+      wakeRecognition.stop();
+    } catch (e) {}
+  }
+
+  wakeRecognition = new SpeechRecognition();
+  wakeRecognition.lang = "en-IN";
+  wakeRecognition.continuous = true;
+  wakeRecognition.interimResults = true;
+
+  wakeRecognition.onstart = () => {
+    wakeModeEnabled = true;
+    wakeButton.textContent = "Disable Hey Pujji";
+    headline.textContent = "Say Hey Pujji...";
+    subtitle.textContent = "I'm waiting for my wake word 💜";
+    hint.textContent = 'Try saying "Hey Pujji"';
+    setStatus("Wake word enabled");
+  };
+
+  wakeRecognition.onresult = event => {
+    let heardText = "";
+
+    for (let i = event.resultIndex; i < event.results.length; i++) {
+      heardText += event.results[i][0].transcript + " ";
+    }
+
+    hint.textContent = heardText.trim();
+
+    if (/hey\s+pujji|hey\s+puji|hi\s+pujji|hey\s+poojji/i.test(heardText)) {
+      wakeModeEnabled = false;
+
+      try {
+        wakeRecognition.stop();
+      } catch (e) {}
+
+      wakeRecognition = null;
+      wakeButton.textContent = "Enable Hey Pujji";
+
+      headline.textContent = "Yes, I'm here! 💜";
+      subtitle.textContent = "Now tell me what you need.";
+      speak("Yes, I'm here! Tell me what you need.", "en-IN");
+
+      setTimeout(() => {
+        startListening();
+      }, 1200);
+    }
+  };
+
+  wakeRecognition.onerror = event => {
+    setStatus("Wake word error: " + event.error);
+    hint.textContent = "Check microphone permission and try again.";
+    wakeModeEnabled = false;
+    wakeButton.textContent = "Enable Hey Pujji";
+  };
+
+  wakeRecognition.onend = () => {
+    if (wakeModeEnabled && wakeRecognition) {
+      try {
+        wakeRecognition.start();
+      } catch (e) {}
+    }
+  };
+
+  try {
+    wakeRecognition.start();
+  } catch (e) {
+    setStatus("Could not start wake word");
+  }
+}
+
+function stopWakeWord() {
+  wakeModeEnabled = false;
+
+  if (wakeRecognition) {
+    const oldRecognition = wakeRecognition;
+    wakeRecognition = null;
+
+    try {
+      oldRecognition.stop();
+    } catch (e) {}
+  }
+
+  wakeButton.textContent = "Enable Hey Pujji";
+  setStatus("Wake word disabled");
+  headline.textContent = "Hey, I'm Pujji ✨";
+}
+
+wakeButton.addEventListener("click", () => {
+  if (wakeModeEnabled) {
+    stopWakeWord();
+  } else {
+    startWakeWord();
+  }
+});
 
 $("stopButton").addEventListener("click", () => {
   if (recognition && listening) recognition.stop();
