@@ -561,7 +561,7 @@ function startListening() {
   }
 
   recognition = new SpeechRecognition();
-  recognition.lang = "hi-IN";
+  recognition.lang = "en-IN";
   recognition.continuous = false;
   recognition.interimResults = true;
   recognition.maxAlternatives = 1;
@@ -587,9 +587,11 @@ function startListening() {
       } else {
         interim += transcript;
       }
-    }
+    }hint.textContent = finalTranscript || interim || "🎙 Listening... Speak now";
+headline.textContent = "I can hear you...";
+setStatus("Listening · Speech detected");
 
-    hint.textContent = finalTranscript || interim || "Listening...";
+    
   };
 
   recognition.onerror = event => {
