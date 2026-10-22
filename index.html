@@ -350,6 +350,15 @@ footer {
       <button class="secondary" id="stopButton">■ Stop voice</button>
     </div>
 
+
+<div>
+  
+<button id="wakeButton" type="button">
+  Enable Hey Pujji
+</button>
+</div>
+
+    
     <div class="hint" id="hint">
       Tap the microphone and start speaking
     </div>
@@ -457,7 +466,7 @@ function speak(text, language = "hi-IN") {
     utterance.lang = language;
   }
 
-  utterance.rate = 1.10;
+  utterance.rate = 1.18;
   utterance.pitch = 1.12;
   utterance.volume = 1;
 
