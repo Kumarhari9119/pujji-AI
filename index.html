@@ -457,7 +457,7 @@ function speak(text, language = "hi-IN") {
     utterance.lang = language;
   }
 
-  utterance.rate = 0.94;
+  utterance.rate = 1.10;
   utterance.pitch = 1.12;
   utterance.volume = 1;
 
@@ -572,7 +572,7 @@ function startListening() {
     document.body.classList.add("listening");
     headline.textContent = "I'm listening...";
     subtitle.textContent = "Bolo, main sun rahi hoon 💜";
-    hint.textContent = "Listening in Hindi · Speak now";
+    hint.textContent = "Listening in english · Speak now";
     micButton.textContent = "⏹";
     setStatus("Listening");
   };
