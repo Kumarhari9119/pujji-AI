@@ -498,39 +498,11 @@ function speak(text, language = "hi-IN") {
   window.speechSynthesis.speak(utterance);
 }
 
-function getReply(text) {
+
+async function getReply(text) {
   const t = text.toLowerCase().trim();
 
-  if (/^(hi|hello|hey|namaste|नमस्ते|हेलो)\b/.test(t) ||
-      /^(namaste|namaskar|नमस्कार)/.test(t)) {
-    return "Hey! 💜 Main Pujji hoon. Batao, aaj tumhare dimaag mein kya chal raha hai?";
-  }
-
-  if (/tumhara naam|your name|who are you|kaun ho/.test(t)) {
-    return "Mera naam Pujji hai! Main tumhari personal AI assistant banne ki taiyari mein hoon. ✨";
-  }
-
-  if (/time|samay|kitne baje|समय|बजे/.test(t)) {
-    return "Tumhare device par abhi " +
-      new Date().toLocaleTimeString("en-IN", {
-        hour: "numeric", minute: "2-digit"
-      }) + " ho rahe hain.";
-  }
-
-  if (/date|tarikh|aaj ki tareekh|तारीख|आज कौन सा दिन/.test(t)) {
-    return "Aaj " + new Date().toLocaleDateString("hi-IN", {
-      weekday: "long", day: "numeric", month: "long", year: "numeric"
-    }) + " hai.";
-  }
-
-  if (/how are you|kaisi ho|kaise ho|कैसी हो|कैसे हो/.test(t)) {
-    return "Main badhiya hoon! 😊 Tumse baat karke achha lag raha hai. Tum kaise ho?";
-  }
-
-  if (/thank|shukriya|धन्यवाद/.test(t)) {
-    return "Aww, you're welcome! 💜 Main yahin hoon, jab bhi tumhe meri zaroorat ho.";
-  }
-
+  // Keep existing quick actions working
   if (/open youtube|youtube kholo/.test(t)) {
     window.open("https://www.youtube.com/", "_blank", "noopener");
     return "YouTube kholne ki koshish kar rahi hoon.";
@@ -541,8 +513,48 @@ function getReply(text) {
     return "Google kholne ki koshish kar rahi hoon.";
   }
 
-  return "Maine suna: \"" + text + "\". Abhi meri basic demo intelligence hai. Agle version mein hum mujhe real AI se connect karenge, taaki main zyada smart jawab de sakoon. 💜";
+  if (/^(time|samay|kitne baje|समय|बजे)/.test(t)) {
+    return "Tumhare device par abhi " +
+      new Date().toLocaleTimeString("en-IN", {
+        hour: "numeric",
+        minute: "2-digit"
+      }) + " ho rahe hain.";
+  }
+
+  if (/^(date|tarikh|aaj ki tareekh|तारीख|आज कौन सा दिन)/.test(t)) {
+    return "Aaj " + new Date().toLocaleDateString("hi-IN", {
+      weekday: "long",
+      day: "numeric",
+      month: "long",
+      year: "numeric"
+    }) + " hai.";
+  }
+
+  // Send all other questions to the real AI backend
+  const response = await fetch(
+    "https://pujji-ai-api.harinandankumar9119.workers.dev/",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ message: text })
+    }
+  );
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.details || data.error || "AI request failed.");
+  }
+
+  if (!data.reply) {
+    throw new Error("Pujji ko AI se jawab nahi mila.");
+  }
+
+  return data.reply;
 }
+
 
 function respond(text, language) {
   if (!text.trim()) return;
