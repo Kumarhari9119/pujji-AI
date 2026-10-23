@@ -521,160 +521,151 @@ async function getReply(text) {
 
 
 
+if (/open facebook|facebook kholo|फेसबुक खोलो/.test(t)) {
+  window.open("https://www.facebook.com/", "_blank", "noopener");
+  return "Facebook kholne ki koshish kar rahi hoon.";
+}
 
-  // Website shortcuts
-  const websiteShortcuts = [
-    {
-      names: ["facebook", "फेसबुक"],
-      url: "https://www.facebook.com/",
-      label: "Facebook"
-    },
-    {
-      names: ["whatsapp", "व्हाट्सएप", "व्हाट्स ऐप"],
-      url: "https://web.whatsapp.com/",
-      label: "WhatsApp Web"
-    },
-    {
-      names: ["instagram", "इंस्टाग्राम"],
-      url: "https://www.instagram.com/",
-      label: "Instagram"
-    },
-    {
-      names: ["linkedin", "लिंक्डइन"],
-      url: "https://www.linkedin.com/",
-      label: "LinkedIn"
-    },
-    {
-      names: ["youtube", "यूट्यूब"],
-      url: "https://www.youtube.com/",
-      label: "YouTube"
-    },
-    {
-      names: ["google", "गूगल"],
-      url: "https://www.google.com/",
-      label: "Google"
-    },
-    {
-      names: ["gmail", "जीमेल"],
-      url: "https://mail.google.com/",
-      label: "Gmail"
-    },
-    {
-      names: ["telegram", "टेलीग्राम"],
-      url: "https://web.telegram.org/",
-      label: "Telegram"
-    },
-    {
-      names: ["x", "twitter", "ट्विटर"],
-      url: "https://x.com/",
-      label: "X (Twitter)"
-    },
-    {
-      names: ["reddit", "रेडिट"],
-      url: "https://www.reddit.com/",
-      label: "Reddit"
-    },
-    {
-      names: ["chatgpt", "चैटजीपीटी"],
-      url: "https://chatgpt.com/",
-      label: "ChatGPT"
-    },
-    {
-      names: ["claude", "क्लॉड"],
-      url: "https://claude.ai/",
-      label: "Claude"
-    },
-    {
-      names: ["gemini", "जेमिनी"],
-      url: "https://gemini.google.com/",
-      label: "Gemini"
-    },
-    {
-      names: ["github", "गिटहब"],
-      url: "https://github.com/",
-      label: "GitHub"
-    },
-    {
-      names: ["stackoverflow", "stack overflow"],
-      url: "https://stackoverflow.com/",
-      label: "Stack Overflow"
-    },
-    {
-      names: ["amazon", "अमेज़न"],
-      url: "https://www.amazon.in/",
-      label: "Amazon India"
-    },
-    {
-      names: ["flipkart", "फ्लिपकार्ट"],
-      url: "https://www.flipkart.com/",
-      label: "Flipkart"
-    },
-    {
-      names: ["google maps", "google map", "गूगल मैप"],
-      url: "https://maps.google.com/",
-      label: "Google Maps"
-    },
-    {
-      names: ["google drive", "गूगल ड्राइव"],
-      url: "https://drive.google.com/",
-      label: "Google Drive"
-    },
-    {
-      names: ["google meet", "गूगल मीट"],
-      url: "https://meet.google.com/",
-      label: "Google Meet"
-    },
-    {
-      names: ["zoom", "ज़ूम"],
-      url: "https://zoom.us/",
-      label: "Zoom"
-    },
-    {
-      names: ["netflix", "नेटफ्लिक्स"],
-      url: "https://www.netflix.com/",
-      label: "Netflix"
-    },
-    {
-      names: ["spotify", "स्पॉटिफाई"],
-      url: "https://open.spotify.com/",
-      label: "Spotify"
-    },
-    {
-      names: ["canva", "कैनवा"],
-      url: "https://www.canva.com/",
-      label: "Canva"
-    },
-    {
-      names: ["wikipedia", "विकिपीडिया"],
-      url: "https://www.wikipedia.org/",
-      label: "Wikipedia"
-    },
-    {
-      names: ["pinterest", "पिनटेरेस्ट"],
-      url: "https://www.pinterest.com/",
-      label: "Pinterest"
-    },
-    {
-      names: ["microsoft", "माइक्रोसॉफ्ट"],
-      url: "https://www.microsoft.com/",
-      label: "Microsoft"
-    },
-    {
-      names: ["outlook", "आउटलुक"],
-      url: "https://outlook.live.com/",
-      label: "Outlook"
-    },
-    {
-      names: ["coursera", "कोर्सेरा"],
-      url: "https://www.coursera.org/",
-      label: "Coursera"
-    },
-    {
-      names: ["wikipedia", "विकिपीडिया"],
-      url: "https://www.wikipedia.org/",
-      label: "Wikipedia"
-    }
-  ];
+if (/open whatsapp|whatsapp kholo|व्हाट्सएप खोलो/.test(t)) {
+  window.open("https://web.whatsapp.com/", "_blank", "noopener");
+  return "WhatsApp kholne ki koshish kar rahi hoon.";
+}
+
+if (/open instagram|instagram kholo|इंस्टाग्राम खोलो/.test(t)) {
+  window.open("https://www.instagram.com/", "_blank", "noopener");
+  return "Instagram kholne ki koshish kar rahi hoon.";
+}
+
+if (/open linkedin|linkedin kholo|लिंक्डइन खोलो/.test(t)) {
+  window.open("https://www.linkedin.com/", "_blank", "noopener");
+  return "LinkedIn kholne ki koshish kar rahi hoon.";
+}
+
+if (/open youtube|youtube kholo|यूट्यूब खोलो/.test(t)) {
+  window.open("https://www.youtube.com/", "_blank", "noopener");
+  return "YouTube kholne ki koshish kar rahi hoon.";
+}
+
+if (/open google|google kholo|गूगल खोलो/.test(t)) {
+  window.open("https://www.google.com/", "_blank", "noopener");
+  return "Google kholne ki koshish kar rahi hoon.";
+}
+
+if (/open gmail|gmail kholo|जीमेल खोलो/.test(t)) {
+  window.open("https://mail.google.com/", "_blank", "noopener");
+  return "Gmail kholne ki koshish kar rahi hoon.";
+}
+
+if (/open telegram|telegram kholo|टेलीग्राम खोलो/.test(t)) {
+  window.open("https://web.telegram.org/", "_blank", "noopener");
+  return "Telegram kholne ki koshish kar rahi hoon.";
+}
+
+if (/open twitter|open x|twitter kholo|ट्विटर खोलो/.test(t)) {
+  window.open("https://x.com/", "_blank", "noopener");
+  return "X Twitter kholne ki koshish kar rahi hoon.";
+}
+
+if (/open reddit|reddit kholo|रेडिट खोलो/.test(t)) {
+  window.open("https://www.reddit.com/", "_blank", "noopener");
+  return "Reddit kholne ki koshish kar rahi hoon.";
+}
+
+if (/open chatgpt|chatgpt kholo|चैटजीपीटी खोलो/.test(t)) {
+  window.open("https://chatgpt.com/", "_blank", "noopener");
+  return "ChatGPT kholne ki koshish kar rahi hoon.";
+}
+
+if (/open claude|claude kholo|क्लॉड खोलो/.test(t)) {
+  window.open("https://claude.ai/", "_blank", "noopener");
+  return "Claude kholne ki koshish kar rahi hoon.";
+}
+
+if (/open gemini|gemini kholo|जेमिनी खोलो/.test(t)) {
+  window.open("https://gemini.google.com/", "_blank", "noopener");
+  return "Gemini kholne ki koshish kar rahi hoon.";
+}
+
+if (/open github|github kholo|गिटहब खोलो/.test(t)) {
+  window.open("https://github.com/", "_blank", "noopener");
+  return "GitHub kholne ki koshish kar rahi hoon.";
+}
+
+if (/open stackoverflow|open stack overflow|stackoverflow kholo/.test(t)) {
+  window.open("https://stackoverflow.com/", "_blank", "noopener");
+  return "Stack Overflow kholne ki koshish kar rahi hoon.";
+}
+
+if (/open amazon|amazon kholo|अमेज़न खोलो/.test(t)) {
+  window.open("https://www.amazon.in/", "_blank", "noopener");
+  return "Amazon kholne ki koshish kar rahi hoon.";
+}
+
+if (/open flipkart|flipkart kholo|फ्लिपकार्ट खोलो/.test(t)) {
+  window.open("https://www.flipkart.com/", "_blank", "noopener");
+  return "Flipkart kholne ki koshish kar rahi hoon.";
+}
+
+if (/open google maps|open google map|google maps kholo|गूगल मैप खोलो/.test(t)) {
+  window.open("https://maps.google.com/", "_blank", "noopener");
+  return "Google Maps kholne ki koshish kar rahi hoon.";
+}
+
+if (/open google drive|google drive kholo|गूगल ड्राइव खोलो/.test(t)) {
+  window.open("https://drive.google.com/", "_blank", "noopener");
+  return "Google Drive kholne ki koshish kar rahi hoon.";
+}
+
+if (/open google meet|google meet kholo|गूगल मीट खोलो/.test(t)) {
+  window.open("https://meet.google.com/", "_blank", "noopener");
+  return "Google Meet kholne ki koshish kar rahi hoon.";
+}
+
+if (/open zoom|zoom kholo|ज़ूम खोलो/.test(t)) {
+  window.open("https://zoom.us/", "_blank", "noopener");
+  return "Zoom kholne ki koshish kar rahi hoon.";
+}
+
+if (/open netflix|netflix kholo|नेटफ्लिक्स खोलो/.test(t)) {
+  window.open("https://www.netflix.com/", "_blank", "noopener");
+  return "Netflix kholne ki koshish kar rahi hoon.";
+}
+
+if (/open spotify|spotify kholo|स्पॉटिफाई खोलो/.test(t)) {
+  window.open("https://open.spotify.com/", "_blank", "noopener");
+  return "Spotify kholne ki koshish kar rahi hoon.";
+}
+
+if (/open canva|canva kholo|कैनवा खोलो/.test(t)) {
+  window.open("https://www.canva.com/", "_blank", "noopener");
+  return "Canva kholne ki koshish kar rahi hoon.";
+}
+
+if (/open wikipedia|wikipedia kholo|विकिपीडिया खोलो/.test(t)) {
+  window.open("https://www.wikipedia.org/", "_blank", "noopener");
+  return "Wikipedia kholne ki koshish kar rahi hoon.";
+}
+
+if (/open pinterest|pinterest kholo|पिनटेरेस्ट खोलो/.test(t)) {
+  window.open("https://www.pinterest.com/", "_blank", "noopener");
+  return "Pinterest kholne ki koshish kar rahi hoon.";
+}
+
+if (/open microsoft|microsoft kholo|माइक्रोसॉफ्ट खोलो/.test(t)) {
+  window.open("https://www.microsoft.com/", "_blank", "noopener");
+  return "Microsoft kholne ki koshish kar rahi hoon.";
+}
+
+if (/open outlook|outlook kholo|आउटलुक खोलो/.test(t)) {
+  window.open("https://outlook.live.com/", "_blank", "noopener");
+  return "Outlook kholne ki koshish kar rahi hoon.";
+}
+
+if (/open coursera|coursera kholo|कोर्सेरा खोलो/.test(t)) {
+  window.open("https://www.coursera.org/", "_blank", "noopener");
+  return "Coursera kholne ki koshish kar rahi hoon.";
+}
+
 
   const command = t
     .replace(/[.,!?।]/g, " ")
