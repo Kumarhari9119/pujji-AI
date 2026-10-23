@@ -569,7 +569,6 @@ subtitle.textContent = "Pujji is preparing a response.";
 setStatus("Thinking...");
 try {
 const reply = await getReply(text);
-```
 addMessage(reply, "assistant");
 
 const replyLanguage = /[\u0900-\u097F]/.test(reply)
@@ -577,10 +576,8 @@ const replyLanguage = /[\u0900-\u097F]/.test(reply)
   : (language || "en-IN");
 
 speak(reply, replyLanguage);
-```
 } catch (error) {
 console.error("Pujji AI error:", error);
-```
 const errorMessage =
   "Sorry, abhi AI se connect nahi ho pa raha hai. Please dobara try karo.";
 
@@ -589,7 +586,7 @@ speak(errorMessage, "hi-IN");
 
 setStatus("AI connection error");
 hint.textContent = error.message || "Please try again.";
-```
+
 }
 }
 
