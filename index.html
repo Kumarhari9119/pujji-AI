@@ -513,6 +513,207 @@ async function getReply(text) {
     return "Google kholne ki koshish kar rahi hoon.";
   }
 
+
+
+
+
+
+
+
+
+
+  // Website shortcuts
+  const websiteShortcuts = [
+    {
+      names: ["facebook", "फेसबुक"],
+      url: "https://www.facebook.com/",
+      label: "Facebook"
+    },
+    {
+      names: ["whatsapp", "व्हाट्सएप", "व्हाट्स ऐप"],
+      url: "https://web.whatsapp.com/",
+      label: "WhatsApp Web"
+    },
+    {
+      names: ["instagram", "इंस्टाग्राम"],
+      url: "https://www.instagram.com/",
+      label: "Instagram"
+    },
+    {
+      names: ["linkedin", "लिंक्डइन"],
+      url: "https://www.linkedin.com/",
+      label: "LinkedIn"
+    },
+    {
+      names: ["youtube", "यूट्यूब"],
+      url: "https://www.youtube.com/",
+      label: "YouTube"
+    },
+    {
+      names: ["google", "गूगल"],
+      url: "https://www.google.com/",
+      label: "Google"
+    },
+    {
+      names: ["gmail", "जीमेल"],
+      url: "https://mail.google.com/",
+      label: "Gmail"
+    },
+    {
+      names: ["telegram", "टेलीग्राम"],
+      url: "https://web.telegram.org/",
+      label: "Telegram"
+    },
+    {
+      names: ["x", "twitter", "ट्विटर"],
+      url: "https://x.com/",
+      label: "X (Twitter)"
+    },
+    {
+      names: ["reddit", "रेडिट"],
+      url: "https://www.reddit.com/",
+      label: "Reddit"
+    },
+    {
+      names: ["chatgpt", "चैटजीपीटी"],
+      url: "https://chatgpt.com/",
+      label: "ChatGPT"
+    },
+    {
+      names: ["claude", "क्लॉड"],
+      url: "https://claude.ai/",
+      label: "Claude"
+    },
+    {
+      names: ["gemini", "जेमिनी"],
+      url: "https://gemini.google.com/",
+      label: "Gemini"
+    },
+    {
+      names: ["github", "गिटहब"],
+      url: "https://github.com/",
+      label: "GitHub"
+    },
+    {
+      names: ["stackoverflow", "stack overflow"],
+      url: "https://stackoverflow.com/",
+      label: "Stack Overflow"
+    },
+    {
+      names: ["amazon", "अमेज़न"],
+      url: "https://www.amazon.in/",
+      label: "Amazon India"
+    },
+    {
+      names: ["flipkart", "फ्लिपकार्ट"],
+      url: "https://www.flipkart.com/",
+      label: "Flipkart"
+    },
+    {
+      names: ["google maps", "google map", "गूगल मैप"],
+      url: "https://maps.google.com/",
+      label: "Google Maps"
+    },
+    {
+      names: ["google drive", "गूगल ड्राइव"],
+      url: "https://drive.google.com/",
+      label: "Google Drive"
+    },
+    {
+      names: ["google meet", "गूगल मीट"],
+      url: "https://meet.google.com/",
+      label: "Google Meet"
+    },
+    {
+      names: ["zoom", "ज़ूम"],
+      url: "https://zoom.us/",
+      label: "Zoom"
+    },
+    {
+      names: ["netflix", "नेटफ्लिक्स"],
+      url: "https://www.netflix.com/",
+      label: "Netflix"
+    },
+    {
+      names: ["spotify", "स्पॉटिफाई"],
+      url: "https://open.spotify.com/",
+      label: "Spotify"
+    },
+    {
+      names: ["canva", "कैनवा"],
+      url: "https://www.canva.com/",
+      label: "Canva"
+    },
+    {
+      names: ["wikipedia", "विकिपीडिया"],
+      url: "https://www.wikipedia.org/",
+      label: "Wikipedia"
+    },
+    {
+      names: ["pinterest", "पिनटेरेस्ट"],
+      url: "https://www.pinterest.com/",
+      label: "Pinterest"
+    },
+    {
+      names: ["microsoft", "माइक्रोसॉफ्ट"],
+      url: "https://www.microsoft.com/",
+      label: "Microsoft"
+    },
+    {
+      names: ["outlook", "आउटलुक"],
+      url: "https://outlook.live.com/",
+      label: "Outlook"
+    },
+    {
+      names: ["coursera", "कोर्सेरा"],
+      url: "https://www.coursera.org/",
+      label: "Coursera"
+    },
+    {
+      names: ["wikipedia", "विकिपीडिया"],
+      url: "https://www.wikipedia.org/",
+      label: "Wikipedia"
+    }
+  ];
+
+  const command = t
+    .replace(/[.,!?।]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+
+  const openWords =
+    /^(?:(?:please|kindly)\s+)?(?:(?:open|launch|visit|go to|show me|kholo|khol do|kholna|chalao|par kholo|पर खोलो)\s+)+/i;
+
+  const requestedSite = command.replace(openWords, "").trim();
+
+  const site = websiteShortcuts.find(item =>
+    item.names.some(name =>
+      requestedSite === name ||
+      requestedSite === name + " kholo" ||
+      requestedSite === name + " open" ||
+      requestedSite === name + " khol do"
+    )
+  );
+
+  if (site) {
+    const openedTab = window.open(site.url, "_blank");
+
+    if (!openedTab) {
+      return site.label +
+        " ka tab browser ne block kar diya. Popup permission allow karo.";
+    }
+
+    return site.label + " khol rahi hoon.";
+  }
+
+
+
+
+
+
+
+
+
   if (/^(time|samay|kitne baje|समय|बजे)/.test(t)) {
     return "Tumhare device par abhi " +
       new Date().toLocaleTimeString("en-IN", {
