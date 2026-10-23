@@ -556,18 +556,46 @@ async function getReply(text) {
 }
 
 
-function respond(text, language) {
-  if (!text.trim()) return;
 
-  addMessage(text, "user");
-  const reply = getReply(text);
-  addMessage(reply, "assistant");
 
-  const replyLanguage = /[\u0900-\u097F]/.test(reply)
-    ? "hi-IN" : (language || "en-IN");
 
-  speak(reply, replyLanguage);
+
+
+async function respond(text, language) {
+if (!text.trim()) return;
+addMessage(text, "user");
+headline.textContent = "One moment...";
+subtitle.textContent = "Pujji is preparing a response.";
+setStatus("Thinking...");
+try {
+const reply = await getReply(text);
+```
+addMessage(reply, "assistant");
+
+const replyLanguage = /[\u0900-\u097F]/.test(reply)
+  ? "hi-IN"
+  : (language || "en-IN");
+
+speak(reply, replyLanguage);
+```
+} catch (error) {
+console.error("Pujji AI error:", error);
+```
+const errorMessage =
+  "Sorry, abhi AI se connect nahi ho pa raha hai. Please dobara try karo.";
+
+addMessage(errorMessage, "assistant");
+speak(errorMessage, "hi-IN");
+
+setStatus("AI connection error");
+hint.textContent = error.message || "Please try again.";
+```
 }
+}
+
+
+
+
 
 function startListening() {
   if (!SpeechRecognition) {
