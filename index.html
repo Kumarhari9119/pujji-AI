@@ -672,40 +672,6 @@ if (/open coursera|coursera kholo|कोर्सेरा खोलो/.test(t)
 }
 
 
-  const command = t
-    .replace(/[.,!?।]/g, " ")
-    .replace(/\s+/g, " ")
-    .trim();
-
-  const openWords =
-    /^(?:(?:please|kindly)\s+)?(?:(?:open|launch|visit|go to|show me|kholo|khol do|kholna|chalao|par kholo|पर खोलो)\s+)+/i;
-
-  const requestedSite = command.replace(openWords, "").trim();
-
-  const site = websiteShortcuts.find(item =>
-    item.names.some(name =>
-      requestedSite === name ||
-      requestedSite === name + " kholo" ||
-      requestedSite === name + " open" ||
-      requestedSite === name + " khol do"
-    )
-  );
-
-  if (site) {
-    const openedTab = window.open(site.url, "_blank");
-
-    if (!openedTab) {
-      return site.label +
-        " ka tab browser ne block kar diya. Popup permission allow karo.";
-    }
-
-    return site.label + " khol rahi hoon.";
-  }
-
-
-
-
-
 
 
 
